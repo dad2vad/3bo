@@ -1,29 +1,55 @@
 {
-  "name": "create-t3-turbo",
+  "name": "root",
+  "version": "1.0.0",
   "private": true,
-  "packageManager": "pnpm@7.27.0",
-  "scripts": {
-    "g": "git add . && git commit -m 0 && git push -u origin main -f",
-    "build": "turbo build",
-    "clean": "rm -rf node_modules",
-    "clean:workspaces": "turbo clean",
-    "db:generate": "turbo db:generate",
-    "db:push": "turbo db:push db:generate",
-    "dev": "turbo dev --parallel",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "lint": "turbo lint",
-    "FIXME:lint": "turbo lint && manypkg check",
-    "type-check": "turbo type-check"
+  "engines": {
+    "node": "16 || 18"
   },
-  "dependencies": {
-    "@manypkg/cli": "^0.19.2",
-    "@typescript-eslint/eslint-plugin": "^5.49.0",
-    "@typescript-eslint/parser": "^5.49.0",
-    "eslint": "^8.33.0",
-    "eslint-config-prettier": "^8.6.0",
-    "prettier": "^2.8.3",
-    "prettier-plugin-tailwindcss": "^0.2.2",
-    "turbo": "latest",
-    "typescript": "^4.9.4"
+  "scripts": {
+  	"g": "git add . && git commit -m - && git push -u origin main -f",
+    "dev": "concurrently \"yarn start\" \"yarn start-backend\"",
+    "start": "yarn workspace app start",
+    "start-backend": "yarn workspace backend start",
+    "build:backend": "yarn workspace backend build",
+    "build:all": "backstage-cli repo build --all",
+    "build-image": "yarn workspace backend build-image",
+    "tsc": "tsc",
+    "tsc:full": "tsc --skipLibCheck false --incremental false",
+    "clean": "backstage-cli repo clean",
+    "test": "backstage-cli repo test",
+    "test:all": "backstage-cli repo test --coverage",
+    "lint": "backstage-cli repo lint --since origin/master",
+    "lint:all": "backstage-cli repo lint",
+    "prettier:check": "prettier --check .",
+    "new": "backstage-cli new --scope internal"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "plugins/*"
+    ]
+  },
+  "devDependencies": {
+    "@backstage/cli": "^0.22.2",
+    "@spotify/prettier-config": "^12.0.0",
+    "concurrently": "^6.0.0",
+    "lerna": "^4.0.0",
+    "node-gyp": "^9.0.0",
+    "prettier": "^2.3.2",
+    "typescript": "~4.6.4"
+  },
+  "resolutions": {
+    "@types/react": "^17",
+    "@types/react-dom": "^17"
+  },
+  "prettier": "@spotify/prettier-config",
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,cjs}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
   }
 }

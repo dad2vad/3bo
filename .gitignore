@@ -1,47 +1,51 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-node_modules
-.pnp
-.pnp.js
-
-# testing
-coverage
-
-# database
-prisma/db.sqlite
-prisma/db.sqlite-journal
-
-# next.js
-.next/
-out/
-
-# expo
-.expo/
-dist/
-
-# production
-build
-
-# misc
+# macOS
 .DS_Store
-*.pem
 
-# debug
+# Logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+lerna-debug.log*
 
-# local env files
+# Coverage directory generated when running tests with coverage
+coverage
+
+# Dependencies
+node_modules/
+
+# Yarn 3 files
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# Node version directives
+.nvmrc
+
+# dotenv environment variables file
 .env
-.env*.local
+.env.test
 
-# vercel
-.vercel
+# Build output
+dist
+dist-types
 
-# typescript
-*.tsbuildinfo
+# Temporary change files created by Vim
+*.swp
 
-# turbo
-.turbo
+# MkDocs build output
+site
+
+# Local configuration files
+*.local.yaml
+
+# Sensitive credentials
+*-credentials.yaml
+
+# vscode database functionality support files
+*.session.sql
