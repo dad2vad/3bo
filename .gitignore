@@ -1,9 +1,47 @@
-# Project dependencies
-# https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
 node_modules
-.cache/
-# Build directory
-public/
-static/admin/*.bundle.*
+.pnp
+.pnp.js
+
+# testing
+coverage
+
+# database
+prisma/db.sqlite
+prisma/db.sqlite-journal
+
+# next.js
+.next/
+out/
+
+# expo
+.expo/
+dist/
+
+# production
+build
+
+# misc
 .DS_Store
-yarn-error.log
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# local env files
+.env
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+
+# turbo
+.turbo

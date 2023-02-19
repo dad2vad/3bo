@@ -1,126 +1,188 @@
-# Gatsby + Netlify CMS Starter
+# create-t3-turbo
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/b654c94e-08a6-4b79-b443-7837581b1d8d/deploy-status)](https://app.netlify.com/sites/gatsby-starter-netlify-cms-ci/deploys)
+<img width="1758" alt="turbo2" src="https://user-images.githubusercontent.com/51714798/202427720-4ec5f285-41a5-4fed-a52f-20b89c5bc1b3.png">
 
-**Note:** This starter uses [Gatsby v2](https://www.gatsbyjs.org/blog/2018-09-17-gatsby-v2/).
+## About
 
-This repo contains an example business website that is built with [Gatsby](https://www.gatsbyjs.org/), and [Netlify CMS](https://www.netlifycms.org): **[Demo Link](https://gatsby-netlify-cms.netlify.com/)**.
+Ever wondered how to migrate your T3 application into a monorepo? Stop right here! This is the perfect starter repo to get you running with the perfect stack!
 
-It follows the [JAMstack architecture](https://jamstack.org) by using Git as a single source of truth, and [Netlify](https://www.netlify.com) for continuous deployment, and CDN distribution.
-
-## Features
-
-- A simple landing page with blog functionality built with Netlify CMS
-- Editabe Pages: Landing, About, Product, Blog-Collection and Contact page with Netlify Form support
-- Create Blog posts from Netlify CMS
-- Tags: Separate page for posts under each tag
-- Basic directory organization
-- Uses Bulma for styling, but size is reduced by `purge-css-plugin`
-- Blazing fast loading times thanks to pre-rendered HTML and automatic chunk loading of JS files
-- Uses `gatsby-image` with Netlify-CMS preview support
-- Separate components for everything
-- Netlify deploy configuration
-- Netlify function support, see `lambda` folder
-- Perfect score on Lighthouse for SEO, Accessibility and Performance (wip:PWA)
-- ..and more
-
-## Prerequisites
-
-- Node (I recommend using v8.2.0 or higher)
-- [Gatsby CLI](https://www.gatsbyjs.org/docs/)
-- [Netlify CLI](https://github.com/netlify/cli)
-
-## Getting Started (Recommended)
-
-Netlify CMS can run in any frontend web environment, but the quickest way to try it out is by running it on a pre-configured starter site with Netlify. The example here is the Kaldi coffee company template (adapted from [One Click Hugo CMS](https://github.com/netlify-templates/one-click-hugo-cms)). Use the button below to build and deploy your own copy of the repository:
-
-<a href="https://app.netlify.com/start/deploy?repository=https://github.com/netlify-templates/gatsby-starter-netlify-cms&amp;stack=cms"><img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify"></a>
-
-After clicking that button, you’ll authenticate with GitHub and choose a repository name. Netlify will then automatically create a repository in your GitHub account with a copy of the files from the template. Next, it will build and deploy the new site on Netlify, bringing you to the site dashboard when the build is complete. Next, you’ll need to set up Netlify’s Identity service to authorize users to log in to the CMS.
-
-### Access Locally
-
-Pulldown a local copy of the Github repository Netlify created for you, with the name you specified in the previous step
-```
-$ git clone https://github.com/[GITHUB_USERNAME]/[REPO_NAME].git
-$ cd [REPO_NAME]
-$ yarn
-$ netlify dev # or ntl dev
-```
-
-This uses the new [Netlify Dev](https://www.netlify.com/products/dev/?utm_source=blog&utm_medium=netlifycms&utm_campaign=devex) CLI feature to serve any functions you have in the `lambda` folder.
-
-To test the CMS locally, you'll need to run a production build of the site:
+It uses [Turborepo](https://turborepo.org/) and contains:
 
 ```
-$ npm run build
-$ netlify dev # or ntl dev
+.github
+  └─ workflows
+        └─ CI with pnpm cache setup
+.vscode
+  └─ Recommended extensions and settings for VSCode users
+apps
+  ├─ expo
+  |   ├─ Expo SDK 46
+  |   ├─ React Native using React 18
+  |   ├─ Tailwind using Nativewind
+  |   └─ Typesafe API calls using tRPC
+  └─ next.js
+      ├─ Next.js 13
+      ├─ React 18
+      ├─ TailwindCSS
+      └─ E2E Typesafe API Server & Client
+packages
+ ├─ api
+ |   └─ tRPC v10 router definition
+ ├─ auth
+     └─ authentication using next-auth. **NOTE: Only for Next.js app, not Expo**
+ └─ db
+     └─ typesafe db-calls using Prisma
 ```
 
-### Media Libraries (installed, but optional)
+## FAQ
 
-Media Libraries have been included in this starter as a default. If you are not planning to use `Uploadcare` or `Cloudinary` in your project, you **can** remove them from module import and registration in `src/cms/cms.js`. Here is an example of the lines to comment or remove them your project.
+### Can you include Solito?
 
-```javascript
-import CMS from 'netlify-cms-app'
-// import uploadcare from 'netlify-cms-media-library-uploadcare'
-// import cloudinary from 'netlify-cms-media-library-cloudinary'
+No. Solito will not be included in this repo. It is a great tool if you want to share code between your Next.js and Expo app. However, the main purpose of this repo is not the integration between Next.js and Expo - it's the codesplitting of your T3 App into a monorepo, the Expo app is just a bonus example of how you can utilize the monorepo with multiple apps but can just as well be any app such as Vite, Electron, etc.
 
-import AboutPagePreview from './preview-templates/AboutPagePreview'
-import BlogPostPreview from './preview-templates/BlogPostPreview'
-import ProductPagePreview from './preview-templates/ProductPagePreview'
-import IndexPagePreview from './preview-templates/IndexPagePreview'
+Integrating Solito into this repo isn't hard, and there are a few [offical templates](https://github.com/nandorojo/solito/tree/master/example-monorepos) by the creators of Solito that you can use as a reference.
 
-// CMS.registerMediaLibrary(uploadcare);
-// CMS.registerMediaLibrary(cloudinary);
+### What auth solution should I use instead of Next-Auth.js for Expo?
 
-CMS.registerPreviewTemplate('index', IndexPagePreview)
-CMS.registerPreviewTemplate('about', AboutPagePreview)
-CMS.registerPreviewTemplate('products', ProductPagePreview)
-CMS.registerPreviewTemplate('blog', BlogPostPreview)
+I've left this kind of open for you to decide. Some options are [Clerk](https://clerk.dev), [Supabase Auth](https://supabase.com/docs/guides/auth), [Firebase Auth](https://firebase.google.com/docs/auth/) or [Auth0](https://auth0.com/docs). Note that if you're dropping the Expo app for something more "browser-like", you can still use Next-Auth.js for those.
+
+The Clerk.dev team even made an [official template repository](https://github.com/clerkinc/t3-turbo-and-clerk) integrating Clerk.dev with this repo.
+
+## Quick Start
+
+To get it running, follow the steps below:
+
+### Setup dependencies
+
+```diff
+# Install dependencies
+pnpm i
+
+# In packages/db/prisma update schema.prisma provider to use sqlite
+# or use your own database provider
+- provider = "postgresql"
++ provider = "sqlite"
+
+# Configure environment variables.
+# There is an `.env.example` in the root directory you can use for reference
+cp .env.example .env
+
+# Push the Prisma schema to your database
+pnpm db:push
 ```
 
-Note: Don't forget to also remove them from `package.json` and `yarn.lock` / `package-lock.json` using `yarn` or `npm`. During the build netlify-cms-app will bundle the media libraries as well, having them removed will save you build time.
-Example:
-```
-yarn remove netlify-cms-media-library-uploadcare
-```
-OR
-```
-yarn remove netlify-cms-media-library-cloudinary
-```
-## Getting Started (Without Netlify)
+### Configure Expo `dev`-script
 
-```
-$ gatsby new [SITE_DIRECTORY_NAME] https://github.com/netlify-templates/gatsby-starter-netlify-cms/
-$ cd [SITE_DIRECTORY_NAME]
-$ npm run build
-$ npm run serve
+#### Use iOS Simulator
+
+1. Make sure you have XCode and XCommand Line Tools installed [as shown on expo docs](https://docs.expo.dev/workflow/ios-simulator/).
+   > **NOTE:** If you just installed XCode, or if you have updated it, you need to open the simulator manually once before you can run it using the turbo `dev`-script.
+
+```diff
++  "dev": "expo start --ios",
 ```
 
-### Setting up the CMS
+3. Run `pnpm dev` at the project root folder.
 
-Follow the [Netlify CMS Quick Start Guide](https://www.netlifycms.org/docs/quick-start/#authentication) to set up authentication, and hosting.
+> **TIP:** It might be easier to run each app in separate terminal windows so you get the logs from each app separately. This is also required if you want your terminals to be interactive, e.g. to access the Expo QR code. You can run `pnpm --filter expo dev` and `pnpm --filter nextjs dev` to run each app in a separate terminal window.
 
-## Debugging
+#### For Android
 
-Windows users might encounter `node-gyp` errors when trying to npm install.
-To resolve, make sure that you have both Python 2.7 and the Visual C++ build environment installed.
+1. Install Android Studio tools [as shown on expo docs](https://docs.expo.dev/workflow/android-studio-emulator/).
+2. Change the `dev` script at `apps/expo/package.json` to open the Android emulator.
 
+```diff
++  "dev": "expo start --android",
 ```
-npm config set python python2.7
-npm install --global --production windows-build-tools
-```
 
-[Full details here](https://www.npmjs.com/package/node-gyp 'NPM node-gyp page')
+3. Run `pnpm dev` at the project root folder.
 
-MacOS users might also encounter some errors, for more info check [node-gyp](https://github.com/nodejs/node-gyp). We recommend using the latest stable node version.
+## Deployment
 
-## Purgecss
+### Next.js
 
-This plugin uses [gatsby-plugin-purgecss](https://www.gatsbyjs.org/packages/gatsby-plugin-purgecss/) and [bulma](https://bulma.io/). The bulma builds are usually ~170K but reduced 90% by purgecss.
+#### Prerequisites
 
-# CONTRIBUTING
+_We do not recommend deploying a SQLite database on serverless environments since the data wouldn't be persisted. I provisioned a quick Postgresql database on [Railway](https://railway.app), but you can of course use any other database provider. Make sure the prisma schema is updated to use the correct database._
 
-Contributions are always welcome, no matter how large or small. Before contributing,
-please read the [code of conduct](CODE_OF_CONDUCT.md).
+#### Deploy to Vercel
+
+Let's deploy the Next.js application to [Vercel](https://vercel.com/). If you have ever deployed a Turborepo app there, the steps are quite straightforward. You can also read the [official Turborepo guide](https://vercel.com/docs/concepts/monorepos/turborepo) on deploying to Vercel.
+
+1. Create a new project on Vercel, select the `apps/nextjs` folder as the root directory and apply the following build settings:
+
+<img width="927" alt="Vercel deployment settings" src="https://user-images.githubusercontent.com/11340449/201974887-b6403a32-5570-4ce6-b146-c486c0dbd244.png">
+
+> The install command filters out the expo package and saves a few second (and cache size) of dependency installation. The build command makes us build the application using Turbo.
+
+2. Add your `DATABASE_URL` environment variable.
+
+3. Done! Your app should successfully deploy. Assign your domain and use that instead of `localhost` for the `url` in the Expo app so that your Expo app can communicate with your backend when you are not in development.
+
+### Expo
+
+Deploying your Expo application works slightly differently compared to Next.js on the web. Instead of "deploying" your app online, you need to submit production builds of your app to the app stores, like [Apple App Store](https://www.apple.com/app-store/) and [Google Play](https://play.google.com/store/apps). You can read the full [Distributing your app](https://docs.expo.dev/distribution/introduction/), including best practices, in the Expo docs.
+
+1. Let's start by setting up [EAS Build](https://docs.expo.dev/build/introduction/), which is short for Expo Application Services. The build service helps you create builds of your app, without requiring a full native development setup. The commands below are a summary of [Creating your first build](https://docs.expo.dev/build/setup/).
+
+   ```bash
+   // Install the EAS CLI
+   $ pnpm add -g eas-cli
+
+   // Log in with your Expo account
+   $ eas login
+
+   // Configure your Expo app
+   $ cd apps/expo
+   $ eas build:configure
+   ```
+
+2. After the initial setup, you can create your first build. You can build for Android and iOS platforms and use different [**eas.json** build profiles](https://docs.expo.dev/build-reference/eas-json/) to create production builds or development, or test builds. Let's make a production build for iOS.
+
+   ```
+   $ eas build --platform ios --profile production
+   ```
+
+   > If you don't specify the `--profile` flag, EAS uses the `production` profile by default.
+
+3. Now that you have your first production build, you can submit this to the stores. [EAS Submit](https://docs.expo.dev/submit/introduction/) can help you send the build to the stores.
+
+   ```
+   $ eas submit --platform ios --latest
+   ```
+
+   > You can also combine build and submit in a single command, using `eas build ... --auto-submit`.
+
+4. Before you can get your app in the hands of your users, you'll have to provide additional information to the app stores. This includes screenshots, app information, privacy policies, etc. _While still in preview_, [EAS Metadata](https://docs.expo.dev/eas/metadata/) can help you with most of this information.
+
+5. Once everything is approved, your users can finally enjoy your app. Let's say you spotted a small typo; you'll have to create a new build, submit it to the stores, and wait for approval before you can resolve this issue. In these cases, you can use EAS Update to quickly send a small bugfix to your users without going through this long process. Let's start by setting up EAS Update.
+
+   The steps below summarize the [Getting started with EAS Update](https://docs.expo.dev/eas-update/getting-started/#configure-your-project) guide.
+
+   ```bash
+   // Add the `expo-updates` library to your Expo app
+   $ cd apps/expo
+   $ pnpm expo install expo-updates
+
+   // Configure EAS Update
+   $ eas update:configure
+   ```
+
+6. Before we can send out updates to your app, you have to create a new build and submit it to the app stores. For every change that includes native APIs, you have to rebuild the app and submit the update to the app stores. See steps 2 and 3.
+
+7. Now that everything is ready for updates, let's create a new update for `production` builds. With the `--auto` flag, EAS Update uses your current git branch name and commit message for this update. See [How EAS Update works](https://docs.expo.dev/eas-update/how-eas-update-works/#publishing-an-update) for more information.
+
+   ```bash
+   $ cd apps/expo
+   $ eas update --auto
+   ```
+
+   > Your OTA (Over The Air) updates must always follow the app store's rules. You can't change your app's primary functionality without getting app store approval. But this is a fast way to update your app for minor changes and bug fixes.
+
+8. Done! Now that you have created your production build, submitted it to the stores, and installed EAS Update, you are ready for anything!
+
+## References
+
+The stack originates from [create-t3-app](https://github.com/t3-oss/create-t3-app).
+
+A [blog post](https://jumr.dev/blog/t3-turbo) where I wrote how to migrate a T3 app into this.
